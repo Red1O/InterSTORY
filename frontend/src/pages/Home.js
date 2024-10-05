@@ -3,13 +3,13 @@ import qin from "../asssets/qin.jpeg"
 const Home =() => {
   return(
 <section className="hero">
-            <div className="hero-container">
+            <div className="hero-containerQin">
                 <div className="welcome">
                     <h1>Welcome to InterSTORY</h1>
                     <p>Choose your story:</p>
                 </div>
             </div>
-            <div className="container">
+            <div className="containerQin w-full">
                 <div className="cell">
                     <div>
                         <img src={qin} className="photo" alt="Dinastia Qin"/>

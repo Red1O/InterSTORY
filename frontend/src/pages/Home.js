@@ -1,4 +1,6 @@
 import qin from "../asssets/qin.jpeg"
+import { Link } from 'react-router-dom';
+import React from 'react';
 
 const Home =() => {
   return(
@@ -10,42 +12,50 @@ const Home =() => {
                 </div>
             </div>
             <div className="containerQin w-full">
-                <div className="cell">
-                    <div>
-                        <img src={qin} className="photo" alt="Dinastia Qin"/>
-                    </div>
-                    <div className="photo-explanation">
-                        <h2>Dinastia Qin</h2>
-                        <p>Crearea si caderea dinastiei Qin 221-206 I.H.</p>
-                    </div>
+            <Link to="/qin-dynasty">
+              <div className="cell">
+                <div>
+                  <img src={qin} className="photo" alt="Dinastia Qin" />
                 </div>
-                <div className="cell">
-                  <div>
-                    <img src={qin} className="photo" alt="Dinastia Qin"/> 
-                  </div>
-                  <div className="photo-explanation">
-                      <h2>Dinastia Qin</h2>
-                      <p>Crearea si caderea dinastiei Qin 221-206 I.H.</p>
-                  </div>
+                <div className="photo-explanation">
+                  <h2>Dinastia Qin</h2>
+                  <p>Crearea si caderea dinastiei Qin 221-206 I.H.</p>
+                </div>
               </div>
+            </Link> 
+            <Link to="/qin-dynasty">
               <div className="cell">
                 <div>
-                  <img src={qin} className="photo" alt="Dinastia Qin"/>
+                  <img src={qin} className="photo" alt="Dinastia Qin" />
                 </div>
                 <div className="photo-explanation">
-                    <h2>Dinastia Qin</h2>
-                    <p>Crearea si caderea dinastiei Qin 221-206 I.H.</p>
+                  <h2>Dinastia Qin</h2>
+                  <p>Crearea si caderea dinastiei Qin 221-206 I.H.</p>
                 </div>
-            </div>
+              </div>
+            </Link> 
+            <Link to="/qin-dynasty">
               <div className="cell">
                 <div>
-                  <img src={qin} className="photo" alt="Dinastia Qin"/>
+                  <img src={qin} className="photo" alt="Dinastia Qin" />
                 </div>
                 <div className="photo-explanation">
-                    <h2>Dinastia Qin</h2>
-                    <p>Crearea si caderea dinastiei Qin 221-206 I.H.</p>
+                  <h2>Dinastia Qin</h2>
+                  <p>Crearea si caderea dinastiei Qin 221-206 I.H.</p>
                 </div>
-            </div>
+              </div>
+            </Link>
+            <Link to="/qin-dynasty">
+              <div className="cell">
+                <div>
+                  <img src={qin} className="photo" alt="Dinastia Qin" />
+                </div>
+                <div className="photo-explanation">
+                  <h2>Dinastia Qin</h2>
+                  <p>Crearea si caderea dinastiei Qin 221-206 I.H.</p>
+                </div>
+              </div>
+            </Link>  
           </div>
         </section>
   );

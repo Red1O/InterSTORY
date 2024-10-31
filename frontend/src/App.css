@@ -1,0 +1,11 @@
+.page-container {
+  padding: 2rem;
+}
+
+/* Centering the content */
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

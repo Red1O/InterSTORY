@@ -15,44 +15,36 @@
       </nav>
       </div>
     </div>
-  );
-}
 
-export default Navbar*/
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
 
-export default function App() {
-  return (
-  <div>
-      <Navbar>
-        <NavbarBrand>
-          <Link className="font-bold text-inherit hover:cursor-pointer">InterSTORY</Link>
-        </NavbarBrand>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          <NavbarItem>
-            <Link color="foreground" href="#">
-              Features
-            </Link>
-          </NavbarItem>
-          <NavbarItem isActive>
-            <Link href="#" aria-current="page">
-              Customers
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="#">
-              Integrations
-            </Link>
-          </NavbarItem>
-        </NavbarContent>
-        <NavbarContent justify="end">
-          <NavbarItem className="hidden lg:flex">
+scrap/use for later
+    <NavbarItem className="hidden lg:flex">
             <Link href="#">Login</Link>
           </NavbarItem>
           <NavbarItem>
             <Button as={Link} color="primary" href="#" variant="flat">
               Sign Up
             </Button>
+          </NavbarItem>
+  );
+}*/
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Button} from "@nextui-org/react";
+import { Link } from 'react-router-dom';
+
+
+export default function App() {
+  return (
+  <div className="w-3000px">
+      <Navbar className="bg-gray-800">
+        <NavbarBrand>
+          <Link to="/Home" className="text-xl font-bold text-inherit hover:cursor-pointer">InterSTORY</Link>
+        </NavbarBrand>
+        <NavbarContent justify="end">
+          <NavbarItem className="hidden lg:flex  ">
+            <Link className="text-white" href="#">About</Link>
+          </NavbarItem>
+          <NavbarItem className="hidden lg:flex">
+            <Link  className="text-white" href ="#">Menu</Link>
           </NavbarItem>
         </NavbarContent>
       </Navbar>

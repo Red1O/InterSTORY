@@ -10,7 +10,8 @@ root.render(
       <NextUIProvider>
         <App/>
       </NextUIProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 
 

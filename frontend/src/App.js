@@ -1,23 +1,25 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route} from 'react-router-dom'
-import Navbar from './components/Navbar'
-import Home from '../src/pages/Home'
-import QinDynasty from './pages/QinDynasty';
-/*import './App.css'*/
-import './index.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Prez from './pages/Prez';
+import Sources from './pages/Sources';
+import About from './pages/About';
+import './index.css';
 
 function App() {
   return (
     <BrowserRouter>
-    <div className="App">
-      <Navbar/>
-      <Routes>
-       { <Route path="/home" element={<Home />}        
-        />}
-        { <Route path="/qin-dynasty" element={<QinDynasty />}        
-        />}
-      </Routes>
-    </div>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/prez" element={<Prez />} />
+          <Route path="/sources" element={<Sources />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

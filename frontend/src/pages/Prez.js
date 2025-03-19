@@ -7,9 +7,7 @@ import qin4 from '../assets/qin4.png';
 import qin5 from '../assets/qin5.png';
 import qin6 from '../assets/qin6.png';
 import qinph from '../assets/qinphh.png';
-import ref1 from '../assets/qinphh1.png';
 import ref2 from '../assets/qinphh2.png';
-import ref3 from '../assets/qinphh3.png';
 import ovr from '../assets/ovr.jpg';
 import CloudBG from '../components/CloudBG';
 
@@ -166,12 +164,11 @@ La vârsta de 22 de ani, Ying Zheng a organizat o lovitură de stat împotriva f
 `;
 
 // Funcție pentru selectarea imaginii de fundal în funcție de indexul curent
+// Funcție pentru selectarea imaginii de fundal în funcție de indexul curent
 const getBackgroundImage = (index) => {
-  // Selecție condiționată a imaginilor de fundal bazată pe indexul prezentării
-  if (index === 0) return qinph;
-  if (index === 1 || index === 2) return ref1;
-  if (index === 3 || index === 4) return ref2;
-  return ref3;
+  // Folosește doar qinph și ref2 pentru toate imaginile de fundal
+  if (index % 2 === 0) return qinph; // Pentru indexuri pare (0, 2, 4, 6)
+  return ref2; // Pentru indexuri impare (1, 3, 5)
 };
 
 // Funcție pentru formatarea textului Markdown în HTML
@@ -186,6 +183,10 @@ const formatMarkdown = (text) => {
 };
 //mark,write from here
 
+
+//mark,write from here
+
+//mark,write from here
 
 //mark,write from here
 
@@ -340,12 +341,15 @@ const Prez = () => {
         className={`fixed inset-0 bg-black transition-opacity duration-700 ease-in-out z-40 ${showIntro ? 'opacity-50' : 'opacity-0 pointer-events-none'}`}
       ></div>
       
-      {/* Slide-ul introductiv care apare de jos în sus */}
+      {/* Slide-ul introductiv care apare de jos în sus - acum mai înalt (85% din înălțimea ecranului) */}
       <div 
-        className={`fixed left-0 bottom-0 w-full h-3/4 transform transition-all duration-700 ease-in-out z-50 ${showIntro ? 'translate-y-0 ' : 'translate-y-full shadow-none'}`}
+        className={`fixed left-1/2 transform -translate-x-1/2 bottom-0 w-[calc(100%+100px)] max-w-[1300px] h-[85%] transition-all duration-700 ease-in-out z-50 ${showIntro ? 'translate-y-0' : 'translate-y-full shadow-none'}`}
+        style={{
+          maxWidth: 'min(calc(100% - 40px), 1300px)'
+        }}
       >
-        {/* Secțiunea superioară cu imagine și fundal transparent */}
-        <div className="w-full h-64 relative overflow-hidden">
+        {/* Secțiunea superioară cu imagine și fundal transparent - acum mai înaltă și cu width: 100% */}
+        <div className="w-full h-96 relative overflow-hidden">
           <img 
             src={ovr} 
             alt="Qin Shi Huang" 
@@ -361,20 +365,21 @@ const Prez = () => {
           </button>
         </div>
         
-        {/* Secțiunea de conținut cu fundal colorat - adăugăm referința pentru scroll */}
+        {/* Secțiunea de conținut cu fundal colorat - ajustată pentru noua înălțime a imaginii */}
         <div 
           ref={introContentRef}
-          className="bg-[rgb(200,193,174)] p-8 pb-16 overflow-y-auto h-[calc(100%-16rem)]"
+          className="bg-[rgb(200,193,174)] p-8 pb-16 overflow-y-auto h-[calc(100%-24rem)]"
         >
-          <div className="max-w-4xl mx-auto font-serif text-[rgb(71,88,76)]">
-            {/* Conținut formatat din Markdown */}
+          <div className="max-w-5xl mx-auto font-serif text-[rgb(71,88,76)]">
+            {/* Conținut formatat din Markdown - am mărit textul pentru mai multă lizibilitate */}
             <div 
-              className="prose max-w-none prose-headings:text-[rgb(71,88,76)] prose-strong:text-[rgb(71,88,76)] prose-strong:font-bold prose-strong:text-xl prose-strong:block prose-strong:mt-6 prose-strong:mb-2 prose-p:text-lg"
+              className="prose max-w-none prose-headings:text-[rgb(71,88,76)] prose-headings:text-3xl prose-strong:text-[rgb(71,88,76)] prose-strong:font-bold prose-strong:text-2xl prose-strong:block prose-strong:mt-6 prose-strong:mb-2 prose-p:text-xl"
               dangerouslySetInnerHTML={{ __html: formatMarkdown(introText) }}
             />
           </div>
         </div>
       </div>
+      
       
       {/* Buton pentru redeschiderea slide-ului intro - vizibil doar când acesta este închis */}
       {!showIntro && (
@@ -421,7 +426,7 @@ const Prez = () => {
               borderRadius: '8px', 
               border: '4px solid rgb(71, 88, 76)', 
               height: '650px', 
-              width: '500px',
+              width: '550px', // Micșorat cu 50px (de la 600px la 550px)
               position: 'relative'
             }}
           >

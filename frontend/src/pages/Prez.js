@@ -183,14 +183,11 @@ const formatMarkdown = (text) => {
 };
 //mark,write from here
 
-
-//mark,write from here
-
-//mark,write from here
-
-//mark,write from here
-
 const Prez = () => {
+  // State pentru a controla vizibilitatea slide-ului introductiv
+  const [showIntro, setShowIntro] = useState(false);
+  // State pentru a urmări dacă slide-ul a fost animat la încărcare
+  const [hasAnimated, setHasAnimated] = useState(false);
   // Referință pentru containerul de scroll al popup-ului
   const introContentRef = React.useRef(null);
   // Referință pentru containerul de scroll al textului prezentării
@@ -203,10 +200,6 @@ const Prez = () => {
   const [fade, setFade] = useState(false);
   // State pentru a controla animațiile în derulare
   const [isAnimating, setIsAnimating] = useState(false);
-  // State pentru a controla vizibilitatea slide-ului introductiv
-  const [showIntro, setShowIntro] = useState(false);
-  // State pentru a urmări dacă slide-ul a fost animat la încărcare
-  const [hasAnimated, setHasAnimated] = useState(false);
 
   // Efect pentru a afișa slide-ul intro la încărcarea inițială
   useEffect(() => {
@@ -331,6 +324,17 @@ const Prez = () => {
     }
   };
 
+  // Stilurile comune pentru butoane - cu borduri mai mari, text mai mare și culoare de bg schimbată
+  const buttonStyle = `
+    px-5 py-3
+    bg-[rgb(200,193,174)] text-[rgb(71,88,76)] 
+    border-3 border-[rgb(71,88,76)] rounded-lg
+    transition-all duration-300 ease-in-out
+    hover:bg-[rgb(71,88,76)] hover:text-[rgb(200,193,174)]
+    hover:-translate-y-1 hover:shadow-xl
+    text-lg font-medium
+  `;
+
   return (
     <div className="flex flex-col relative" style={{ height: 'calc(100vh - 80px)', backgroundColor: 'rgb(233, 226, 207)' }}>
       {/* Fundal cu nori animați */}
@@ -341,37 +345,44 @@ const Prez = () => {
         className={`fixed inset-0 bg-black transition-opacity duration-700 ease-in-out z-40 ${showIntro ? 'opacity-50' : 'opacity-0 pointer-events-none'}`}
       ></div>
       
-      {/* Slide-ul introductiv care apare de jos în sus - acum mai înalt (85% din înălțimea ecranului) */}
+      {/* Slide-ul introductiv care apare de jos în sus - 100vh wide fără scrollbar */}
       <div 
-        className={`fixed left-1/2 transform -translate-x-1/2 bottom-0 w-[calc(100%+100px)] max-w-[1300px] h-[85%] transition-all duration-700 ease-in-out z-50 ${showIntro ? 'translate-y-0' : 'translate-y-full shadow-none'}`}
-        style={{
-          maxWidth: 'min(calc(100% - 40px), 1300px)'
-        }}
+        className={`fixed left-1/2 transform -translate-x-1/2 bottom-0 w-full h-[85%] transition-all duration-700 ease-in-out z-50 ${showIntro ? 'translate-y-0' : 'translate-y-full shadow-none'}`}
       >
-        {/* Secțiunea superioară cu imagine și fundal transparent - acum mai înaltă și cu width: 100% */}
+        {/* Secțiunea superioară cu imagine */}
         <div className="w-full h-96 relative overflow-hidden">
           <img 
             src={ovr} 
             alt="Qin Shi Huang" 
             className="w-full h-full object-cover"
           />
-          {/* Buton pentru închiderea slide-ului intro */}
-          <button 
-            className="absolute top-4 right-4 bg-[rgb(71,88,76)] text-[rgb(233,226,207)] rounded-full w-10 h-10 flex items-center justify-center hover:scale-110 transition-transform duration-200"
-            onClick={toggleIntro}
-            aria-label="Închide informațiile despre tinerețea lui Qin Shi Huang"
-          >
-            ×
-          </button>
         </div>
         
-        {/* Secțiunea de conținut cu fundal colorat - ajustată pentru noua înălțime a imaginii */}
+        {/* Secțiunea de conținut cu fundal colorat */}
         <div 
           ref={introContentRef}
-          className="bg-[rgb(200,193,174)] p-8 pb-16 overflow-y-auto h-[calc(100%-24rem)]"
+          className="bg-[rgb(200,193,174)] p-8 pb-16 overflow-hidden h-[calc(100%-24rem)] relative"
         >
+          {/* Butonul X centrat exact și care nu se mișcă la hover */}
+          <div className="absolute top-4 right-4 flex items-center justify-center">
+            <button 
+              className="bg-[rgb(71,88,76)] text-[rgb(233,226,207)] rounded-full w-14 h-14 flex items-center justify-center text-3xl transform-none"
+              onClick={toggleIntro}
+              aria-label="Închide informațiile despre tinerețea lui Qin Shi Huang"
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <span style={{ 
+                position: 'absolute', 
+                top: '50%', 
+                left: '50%', 
+                transform: 'translate(-50%, -50%)',
+                lineHeight: '1'
+              }}>×</span>
+            </button>
+          </div>
+          
           <div className="max-w-5xl mx-auto font-serif text-[rgb(71,88,76)]">
-            {/* Conținut formatat din Markdown - am mărit textul pentru mai multă lizibilitate */}
+            {/* Conținut formatat din Markdown */}
             <div 
               className="prose max-w-none prose-headings:text-[rgb(71,88,76)] prose-headings:text-3xl prose-strong:text-[rgb(71,88,76)] prose-strong:font-bold prose-strong:text-2xl prose-strong:block prose-strong:mt-6 prose-strong:mb-2 prose-p:text-xl"
               dangerouslySetInnerHTML={{ __html: formatMarkdown(introText) }}
@@ -381,10 +392,10 @@ const Prez = () => {
       </div>
       
       
-      {/* Buton pentru redeschiderea slide-ului intro - vizibil doar când acesta este închis */}
+      {/* Buton pentru redeschiderea slide-ului intro - stilizat ca celelalte butoane */}
       {!showIntro && (
         <button 
-          className="fixed bottom-5 right-5 bg-[rgb(71,88,76)] text-[rgb(233,226,207)] border-2 border-[rgb(233,226,207)] rounded-lg py-2 px-4 font-bold shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-200 z-40"
+          className={`fixed bottom-5 right-5 ${buttonStyle} z-40`}
           onClick={toggleIntro}
         >
           Viața lui Qin Shi Huang
@@ -393,9 +404,12 @@ const Prez = () => {
       
       {/* Conținutul principal al prezentării - împărțit în două coloane */}
       <div className="pl-24 flex flex-1 w-full relative" style={{ zIndex: 2 }}>
-        {/* Prima coloană - imaginile prezentării */}
+        {/* Prima coloană - imaginile prezentării - acum cu click pentru a naviga */}
         <div className="flex-shrink-0 w-[calc(50%-25px)] flex items-center justify-center relative p-12">
-          <div className="w-[617px] h-[300px] flex items-center justify-center">
+          <div 
+            className="w-[617px] h-[300px] flex items-center justify-center cursor-pointer" 
+            onClick={() => currentIndex < images.length - 1 && !isAnimating && handleNext()}
+          >
             {/* Imaginea curentă vizibilă */}
             <img
               src={images[currentIndex]}
@@ -430,8 +444,11 @@ const Prez = () => {
               position: 'relative'
             }}
           >
-            {/* Imaginea de fundal pentru textul prezentării */}
-            <div className="w-full h-[300px] overflow-hidden absolute top-0 left-0">
+            {/* Imaginea de fundal pentru textul prezentării - acum și ea clickabilă */}
+            <div 
+              className="w-full h-[300px] overflow-hidden absolute top-0 left-0 cursor-pointer"
+              onClick={() => currentIndex < images.length - 1 && !isAnimating && handleNext()}
+            >
               <img
                 src={getBackgroundImage(currentIndex)}
                 alt="Background"
@@ -444,13 +461,13 @@ const Prez = () => {
             </div>
           </div>
           
-          {/* Butoane de navigare pentru prezentare */}
+          {/* Butoane de navigare pentru prezentare cu noul stil */}
           <div className="flex justify-center space-x-4 mt-4">
             {/* Butonul Înapoi - vizibil doar dacă nu suntem la primul slide */}
             {currentIndex > 0 && (
               <button 
                 onClick={handleUndo} 
-                className={`px-4 py-2 transition duration-150 hover:shadow-md bg-[rgb(71,88,76)] text-[rgb(233,226,207)] rounded-lg border-2 border-[rgb(233,226,207)] ${isAnimating ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                className={`${buttonStyle} ${isAnimating ? 'opacity-50 cursor-not-allowed' : ''}`} 
                 disabled={isAnimating}
               >
                 &#8592; Înapoi
@@ -459,7 +476,7 @@ const Prez = () => {
             {/* Butonul de resetare - mereu vizibil */}
             <button 
               onClick={handleRevert} 
-              className={`px-4 py-2 transition duration-150 hover:shadow-md bg-[rgb(71,88,76)] text-[rgb(233,226,207)] rounded-lg border-2 border-[rgb(233,226,207)] ${isAnimating ? 'opacity-50 cursor-not-allowed' : ''}`} 
+              className={`${buttonStyle} ${isAnimating ? 'opacity-50 cursor-not-allowed' : ''}`} 
               disabled={isAnimating}
             >
               Resetare
@@ -468,7 +485,7 @@ const Prez = () => {
             {currentIndex < images.length - 1 && (
               <button 
                 onClick={handleNext} 
-                className={`px-4 py-2 transition duration-150 hover:shadow-md bg-[rgb(71,88,76)] text-[rgb(233,226,207)] rounded-lg border-2 border-[rgb(233,226,207)] ${isAnimating ? 'opacity-50 cursor-not-allowed' : ''}`} 
+                className={`${buttonStyle} ${isAnimating ? 'opacity-50 cursor-not-allowed' : ''}`} 
                 disabled={isAnimating}
               >
                 Înainte &#8594;
@@ -478,7 +495,7 @@ const Prez = () => {
         </div>
       </div>
       
-      {/* Stiluri pentru scrollbar */}
+      {/* Stiluri pentru scrollbar - le păstrăm pentru div-ul de conținut dar nu pentru popup */}
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           width: 8px;

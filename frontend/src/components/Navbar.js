@@ -136,6 +136,14 @@ const Navbar = () => {
             Sources
           </Link>
           <hr className="my-2 border-t border-gray-200 opacity-30" style={{ marginLeft: '16px', marginRight: '16px' }} />
+          <Link 
+            className="block px-4 py-2 text-lg hover:bg-opacity-20 hover:bg-white transition-colors duration-200 rounded" 
+            style={{ color: 'rgb(233, 226, 207)', position: 'relative', zIndex: 1003 }} 
+            to="/quiz"
+          >
+            Quiz
+          </Link>
+          <hr className="my-2 border-t border-gray-200 opacity-30" style={{ marginLeft: '16px', marginRight: '16px' }} />
           <button 
             className="block w-full text-left px-4 py-2 text-lg hover:bg-opacity-20 hover:bg-white transition-colors duration-200 rounded" 
             style={{ color: 'rgb(233, 226, 207)', position: 'relative', zIndex: 1003 }} 

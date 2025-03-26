@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CloudBG from '../components/CloudBG';
 import Shi from '../assets/shi.png';
 import Zheng from '../assets/zheng.png';
+import JSConfetti from 'js-confetti'
+
+
 const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
@@ -11,7 +14,10 @@ const Quiz = () => {
 
   const [currentFact, setCurrentFact] = useState(0);
   const [factPaused, setFactPaused] = useState(false);
-
+  const jsConfettiRef = useRef(null);
+  useEffect(() => {
+    jsConfettiRef.current = new JSConfetti();
+  }, []);
   const questions = [
     {
       questionText: 'Care a fost primul stat cucerit de Qin în procesul de unificare?',
@@ -58,8 +64,9 @@ const Quiz = () => {
       answerOptions: [
         { answerText: 'Zhao', isCorrect: false },
         { answerText: 'Yan', isCorrect: false },
-        { answerText: 'Qi', isCorrect: false },
         { answerText: 'Chu', isCorrect: true },
+        { answerText: 'Qi', isCorrect: false },
+        
       ],
       explanation: 'Bătălia împotriva Chu a fost cea mai dificilă din toate războaiele de unificare, necesitând resurse masive și strategie superioară pentru a învinge un stat cu populație și teritoriu mai mare decât a statului Qin.'
     },
@@ -107,9 +114,10 @@ const Quiz = () => {
       questionText: 'Ce reformă importantă a implementat Qin Shi Huang după unificarea Chinei?',
       answerOptions: [
         { answerText: 'Crearea sistemului feudal', isCorrect: false },
-        { answerText: 'Standardizarea scrierii, monedelor și măsurătorilor', isCorrect: true },
+        
         { answerText: 'Introducerea democrației locale', isCorrect: false },
         { answerText: 'Descentralizarea puterii militare', isCorrect: false },
+        { answerText: 'Standardizarea scrierii, monedelor și măsurătorilor', isCorrect: true },
       ],
       explanation: 'Una dintre cele mai durabile moșteniri ale dinastiei Qin a fost standardizarea. Aceasta a inclus: sistemul "Small Seal" de scriere, monede rotunde cu gaură pătrată, unități de măsură standardizate, lățimea osiilor carelor și coduri legale uniforme.'
     },
@@ -163,6 +171,15 @@ const Quiz = () => {
       setShowExplanation(false);
     } else {
       setShowScore(true);
+      jsConfettiRef.current && jsConfettiRef.current.addConfetti({
+        confettiColors: [
+          'rgb(71, 88, 76)',
+          'rgb(200, 193, 174)',
+          'rgb(212, 175, 55)'
+        ],
+        confettiRadius: 6,
+        confettiNumber: 500,
+      });
     }
   };
 
@@ -237,10 +254,10 @@ const Quiz = () => {
             </h2>
             <p className="mb-6 text-lg text-[rgb(71,88,76)]">
               {score > 7 
-                ? 'Excelent! Ești un adevărat expert în istoria dinastiei Qin!' 
+                ? 'Excelent! Ești un adevărat expert în istoria crearii dinastiei Qin!' 
                 : score > 5 
                   ? 'Bine! Ai cunoștințe solide despre unificarea Chinei.' 
-                  : 'Continuă să înveți despre fascinanta istorie a dinastiei Qin!'}
+                  : 'Continuă să înveți despre fascinanta istorie a crearii dinastiei Qin!'}
             </p>
             <button 
               onClick={resetQuiz} 
@@ -308,56 +325,56 @@ const Quiz = () => {
         )}
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-[rgb(200,193,174)] py-4 px-6 shadow-lg z-20 opacity-90">
-      <div className="flex items-center justify-between mb-1 max-w-6xl mx-auto">
-        <button
-          onClick={prevFact}
-          className="flex items-center justify-center w-10 h-10 text-[rgb(71,88,76)] hover:bg-[rgb(190,183,164)] rounded-full transition-all"
-          aria-label="Faptul anterior"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-            <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-          </svg>
-        </button>
-        
-        <div className="flex-1 mx-8">
-          <p className="italic text-lg text-center text-[rgb(71,88,76)]">
-            {funFacts[currentFact]}
-          </p>
-        </div>
+<div className="fixed bottom-0 left-0 right-0 bg-[rgb(200,193,174)] py-4 px-6 shadow-lg z-20 opacity-90">
+  <div className="flex items-center justify-between mb-1 max-w-6xl mx-auto">
+    <button
+      onClick={prevFact}
+      className="flex items-center justify-center w-10 h-10 text-[rgb(71,88,76)] hover:bg-[rgb(190,183,164)] rounded-full transition-all"
+      aria-label="Faptul anterior"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+        <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+      </svg>
+    </button>
 
-        <div className="flex items-center">
-          <button
-            onClick={togglePause}
-            className="flex items-center justify-center w-10 h-10 mx-2 text-[rgb(71,88,76)] hover:bg-[rgb(190,183,164)] rounded-full transition-all"
-            aria-label={factPaused ? "Continuă" : "Pauză"}
-          >
-            {factPaused ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>
-              </svg>
-            )}
-          </button>
-          
-          <button
-            onClick={nextFact}
-            className="flex items-center justify-center w-10 h-10 text-[rgb(71,88,76)] hover:bg-[rgb(190,183,164)] rounded-full transition-all"
-            aria-label="Faptul următor"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-              <path fillRule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div className="text-center text-sm text-[rgb(71,88,76)]">
-        <span>Știați că... ({currentFact + 1}/{funFacts.length})</span>
-      </div>
+    <div className="flex-1 mx-8 h-[80px] flex items-center justify-center overflow-y-auto">
+      <p className="italic text-lg text-center text-[rgb(71,88,76)] m-0">
+        {funFacts[currentFact]}
+      </p>
     </div>
+
+    <div className="flex items-center">
+      <button
+        onClick={togglePause}
+        className="flex items-center justify-center w-10 h-10 mx-2 text-[rgb(71,88,76)] hover:bg-[rgb(190,183,164)] rounded-full transition-all"
+        aria-label={factPaused ? "Continuă" : "Pauză"}
+      >
+        {factPaused ? (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>
+          </svg>
+        )}
+      </button>
+      
+      <button
+        onClick={nextFact}
+        className="flex items-center justify-center w-10 h-10 text-[rgb(71,88,76)] hover:bg-[rgb(190,183,164)] rounded-full transition-all"
+        aria-label="Faptul următor"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+          <path fillRule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div className="text-center text-sm text-[rgb(71,88,76)]">
+    <span>Știați că... ({currentFact + 1}/{funFacts.length})</span>
+  </div>
+</div>
   </div>
 );
 };

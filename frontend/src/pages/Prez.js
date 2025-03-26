@@ -309,7 +309,7 @@ const Prez = () => {
       <CloudBG />
 
       <div 
-        className={`fixed inset-0 bg-black transition-opacity duration-700 ease-in-out z-40 ${showIntro ? 'opacity-50' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 bg-black transition-opacity duration-700 ease-in-out z-40 ${showIntro ? 'opacity-65' : 'opacity-0 pointer-events-none'}`}
       ></div>
       
 

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import c1l from '../assets/c1l.png'; // Changed from c1 to c1l
+import c1l from '../assets/c1l.png';
 import c1r from '../assets/c1r.png';
 import c2 from '../assets/c2.png';
 import c3 from '../assets/c3.png';
 
 const CloudBG = () => {
+  //  rgb(71, 88, 76)
+  const greenFilter = 'brightness(0) saturate(100%) invert(31%) sepia(12%) saturate(935%) hue-rotate(86deg) brightness(95%) contrast(86%)';
+  
   const cloudSizes = {
     c1l: { width: '13rem' }, 
     c1r: { width: '16rem' },
@@ -147,17 +150,17 @@ const CloudBG = () => {
           style={{ 
             left: `${set.mainPos}px`, 
             top: '10px',
-            width: cloudSizes.c1l.width, // Changed from c1 to c1l
-            maxWidth: cloudSizes.c1l.width, // Changed from c1 to c1l
+            width: cloudSizes.c1l.width,
+            maxWidth: cloudSizes.c1l.width,
             opacity: activeLeftSets.includes(set.index) ? 0.8 : 0,
             transition: 'opacity 0.5s ease'
           }}
         >
           <img 
-            src={c1l} // Changed from c1 to c1l
+            src={c1l}
             alt={`Cloud 1-${index}`} 
             className="w-full h-auto object-contain"
-            style={{ filter: 'brightness(1.1)' }}
+            style={{ filter: greenFilter, opacity: 0.7 }}
           />
         </div>
       ))}
@@ -178,7 +181,7 @@ const CloudBG = () => {
             src={c3} 
             alt={`Cloud 3-${index}`} 
             className="w-full h-auto object-contain"
-            style={{ filter: 'brightness(1.1)' }}
+            style={{ filter: greenFilter, opacity: 0.7 }}
           />
         </div>
       ))}
@@ -200,8 +203,9 @@ const CloudBG = () => {
             alt={`Cloud 2-${index}`} 
             className="w-full h-auto object-contain"
             style={{ 
-              filter: 'brightness(1.1)',
-              transform: 'scaleX(-1)'
+              filter: greenFilter,
+              transform: 'scaleX(-1)',
+              opacity: 0.7
             }}
           />
         </div>
@@ -224,8 +228,9 @@ const CloudBG = () => {
             alt={`Cloud 4-${index}`} 
             className="w-full h-auto object-contain"
             style={{ 
-              filter: 'brightness(1.1)',
-              transform: 'scaleX(-1)'
+              filter: greenFilter,
+              transform: 'scaleX(-1)',
+              opacity: 0.7
             }}
           />
         </div>

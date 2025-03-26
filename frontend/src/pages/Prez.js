@@ -11,14 +11,12 @@ import ref2 from '../assets/qinphh2.png';
 import ovr from '../assets/ovr.jpg';
 import CloudBG from '../components/CloudBG';
 
-// Array cu imagini pentru prezentarea principală
+
 const images = [qin0, qin1, qin2, qin3, qin4, qin5, qin6];
 
-// Textele asociate fiecărei imagini din prezentare - îmbogățite cu informații suplimentare
-// Textele asociate fiecărei imagini din prezentare - extinse cu informații istorice detaliate
 const texts = [
   `**Qin cucerește Han:**
-  Bătălia de la Chenggao (230 î.Hr.) a marcat începutul războaielor de unificare ale Qin. Han a fost primul stat care a căzut, deși nu era cel mai slab dintre statele combatante.
+  Bătălia de la Chenggao (230 î.Hr.) a marcat începutul războaielor de unificare ale Qin.
   
   Armata Qin, condusă de generalul Wang Jian, a învins rapid forțele Han, capturând capitala lor și forțându-i să se predea. Forțele Qin numărau aproximativ 200.000 de soldați, în timp ce Han putea mobiliza doar 150.000 de luptători, mulți dintre ei recrutați recent și slab antrenați. Wang Jian a exploatat această diferență de pregătire prin manevre rapide care nu le-au dat timp soldaților Han să se organizeze eficient.
   
@@ -163,158 +161,128 @@ La vârsta de 22 de ani, Ying Zheng a organizat o lovitură de stat împotriva f
 Încă din tinerețe, Ying Zheng a arătat o ambiție extraordinară și o viziune clară pentru unificarea tuturor statelor chineze sub conducerea sa. Metodele sale erau adesea necruțătoare, dar eficiente, punând bazele pentru transformarea Chinei într-un imperiu centralizat.
 `;
 
-// Funcție pentru selectarea imaginii de fundal în funcție de indexul curent
-// Funcție pentru selectarea imaginii de fundal în funcție de indexul curent
+
 const getBackgroundImage = (index) => {
-  // Folosește doar qinph și ref2 pentru toate imaginile de fundal
-  if (index % 2 === 0) return qinph; // Pentru indexuri pare (0, 2, 4, 6)
-  return ref2; // Pentru indexuri impare (1, 3, 5)
+  if (index % 2 === 0) return qinph; 
+  return ref2; 
 };
 
-// Funcție pentru formatarea textului Markdown în HTML
 const formatMarkdown = (text) => {
-  // Procesare simplă markdown pentru: titluri, text bold, paragrafe
   return text
-    .replace(/^# (.*$)/gm, '<h1>$1</h1>') // Convertește titlurile
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Convertește textul bold
-    .replace(/\n\n/g, '</p><p>') // Convertește paragrafele
-    .replace(/^[^<].*$/gm, '<p>$&</p>') // Învelește restul textului în paragrafe
-    .replace(/<p><\/p>/g, ''); // Elimină paragrafele goale
+    .replace(/^# (.*$)/gm, '<h1>$1</h1>') 
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+    .replace(/\n\n/g, '</p><p>') 
+    .replace(/^[^<].*$/gm, '<p>$&</p>') 
+    .replace(/<p><\/p>/g, '');
 };
-//mark,write from here
 
 const Prez = () => {
-  // State pentru a controla vizibilitatea slide-ului introductiv
   const [showIntro, setShowIntro] = useState(false);
-  // State pentru a urmări dacă slide-ul a fost animat la încărcare
   const [hasAnimated, setHasAnimated] = useState(false);
-  // Referință pentru containerul de scroll al popup-ului
   const introContentRef = React.useRef(null);
-  // Referință pentru containerul de scroll al textului prezentării
   const textContentRef = React.useRef(null);
-  
-  // State pentru indexul curent și următorul index al prezentării
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(0);
-  // State pentru efectul de fade între slide-uri
   const [fade, setFade] = useState(false);
-  // State pentru a controla animațiile în derulare
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Efect pentru a afișa slide-ul intro la încărcarea inițială
   useEffect(() => {
-    // Delay pentru a permite încărcarea completă a paginii
     const initialTimer = setTimeout(() => {
       if (!hasAnimated) {
-        // Afișează slide-ul intro și marchează ca fiind animat
         setShowIntro(true);
         setHasAnimated(true);
       }
-    }, 800); // Delay mai lung pentru a permite încărcarea completă
+    }, 800); 
 
     return () => clearTimeout(initialTimer);
   }, [hasAnimated]);
 
-  // Gestionează navigarea la următorul slide
+
   const handleNext = () => {
-    // Previne navigarea dacă o animație este în curs sau am ajuns la ultimul slide
     if (isAnimating || currentIndex >= images.length - 1) return;
     
-    // Setează starea de animație
     setIsAnimating(true);
     setNextIndex(currentIndex + 1);
     setFade(true);
-    
-    // După ce fade-out-ul este complet, resetăm poziția de scroll
     setTimeout(() => {
-      // Resetăm poziția de scroll pentru popup dacă este vizibil
+
       if (showIntro && introContentRef.current) {
         introContentRef.current.scrollTop = 0;
       }
-      
-      // Resetăm poziția de scroll pentru containerul de text
+ 
       if (textContentRef.current) {
         textContentRef.current.scrollTop = 0;
       }
-      
-      // Actualizăm indexul curent și începem fade-in
+
       setCurrentIndex(currentIndex + 1);
       setFade(false);
-      
-      // Resetează starea de animație după finalizare completă
       setTimeout(() => {
-        setIsAnimating(false);
-      }, 100);
-    }, 1000); // Așteaptă până când fade-out-ul este complet
+        setIsAnimating(false);}, 100);
+    }, 1000); 
   };
 
-  // Gestionează resetarea la primul slide
   const handleRevert = () => {
     if (isAnimating) return;
     
     setIsAnimating(true);
     setNextIndex(0);
     setFade(true);
-    
-    // După ce fade-out-ul este complet, resetăm poziția de scroll
+
     setTimeout(() => {
-      // Resetăm poziția de scroll pentru popup dacă este vizibil
+
       if (showIntro && introContentRef.current) {
         introContentRef.current.scrollTop = 0;
       }
       
-      // Resetăm poziția de scroll pentru containerul de text
+
       if (textContentRef.current) {
         textContentRef.current.scrollTop = 0;
       }
       
-      // Actualizăm indexul curent și începem fade-in
+
       setCurrentIndex(0);
       setFade(false);
       
-      // Resetează starea de animație după finalizare completă
+
       setTimeout(() => {
         setIsAnimating(false);
       }, 100);
-    }, 1000); // Așteaptă până când fade-out-ul este complet
+    }, 1000); 
   };
 
-  // Gestionează navigarea la slide-ul anterior
+
   const handleUndo = () => {
     if (isAnimating || currentIndex <= 0) return;
     
     setIsAnimating(true);
     setNextIndex(currentIndex - 1);
     setFade(true);
-    
-    // După ce fade-out-ul este complet, resetăm poziția de scroll
     setTimeout(() => {
-      // Resetăm poziția de scroll pentru popup dacă este vizibil
+
       if (showIntro && introContentRef.current) {
         introContentRef.current.scrollTop = 0;
       }
       
-      // Resetăm poziția de scroll pentru containerul de text
+
       if (textContentRef.current) {
         textContentRef.current.scrollTop = 0;
       }
       
-      // Actualizăm indexul curent și începem fade-in
+
       setCurrentIndex(currentIndex - 1);
       setFade(false);
       
-      // Resetează starea de animație după finalizare completă
+
       setTimeout(() => {
         setIsAnimating(false);
       }, 100);
-    }, 1000); // Așteaptă până când fade-out-ul este complet
+    }, 1000);
   };
 
-  // Comută vizibilitatea slide-ului introductiv
+
   const toggleIntro = () => {
     setShowIntro(!showIntro);
     
-    // Resetăm poziția de scroll când deschidem popup-ul
     if (!showIntro) {
       setTimeout(() => {
         if (introContentRef.current) {
@@ -324,7 +292,7 @@ const Prez = () => {
     }
   };
 
-  // Stilurile comune pentru butoane - cu borduri mai mari, text mai mare și culoare de bg schimbată
+
   const buttonStyle = `
     px-5 py-3
     bg-[rgb(200,193,174)] text-[rgb(71,88,76)] 
@@ -337,19 +305,18 @@ const Prez = () => {
 
   return (
     <div className="flex flex-col relative" style={{ height: 'calc(100vh - 80px)', backgroundColor: 'rgb(233, 226, 207)' }}>
-      {/* Fundal cu nori animați */}
+
       <CloudBG />
-      
-      {/* Overlay semi-transparent care se afișează când slide-ul intro este vizibil */}
+
       <div 
         className={`fixed inset-0 bg-black transition-opacity duration-700 ease-in-out z-40 ${showIntro ? 'opacity-50' : 'opacity-0 pointer-events-none'}`}
       ></div>
       
-      {/* Slide-ul introductiv care apare de jos în sus - 100vh wide fără scrollbar */}
+
       <div 
         className={`fixed left-1/2 transform -translate-x-1/2 bottom-0 w-full h-[85%] transition-all duration-700 ease-in-out z-50 ${showIntro ? 'translate-y-0' : 'translate-y-full shadow-none'}`}
       >
-        {/* Secțiunea superioară cu imagine */}
+
         <div className="w-full h-96 relative overflow-hidden">
           <img 
             src={ovr} 
@@ -357,13 +324,12 @@ const Prez = () => {
             className="w-full h-full object-cover"
           />
         </div>
-        
-        {/* Secțiunea de conținut cu fundal colorat */}
+
         <div 
           ref={introContentRef}
           className="bg-[rgb(200,193,174)] p-8 pb-16 overflow-hidden h-[calc(100%-24rem)] relative"
         >
-          {/* Butonul X centrat exact și care nu se mișcă la hover */}
+
           <div className="absolute top-4 right-4 flex items-center justify-center">
             <button 
               className="bg-[rgb(71,88,76)] text-[rgb(233,226,207)] rounded-full w-14 h-14 flex items-center justify-center text-3xl transform-none"
@@ -382,7 +348,7 @@ const Prez = () => {
           </div>
           
           <div className="max-w-5xl mx-auto font-serif text-[rgb(71,88,76)]">
-            {/* Conținut formatat din Markdown */}
+
             <div 
               className="prose max-w-none prose-headings:text-[rgb(71,88,76)] prose-headings:text-3xl prose-strong:text-[rgb(71,88,76)] prose-strong:font-bold prose-strong:text-2xl prose-strong:block prose-strong:mt-6 prose-strong:mb-2 prose-p:text-xl"
               dangerouslySetInnerHTML={{ __html: formatMarkdown(introText) }}
@@ -392,7 +358,6 @@ const Prez = () => {
       </div>
       
       
-      {/* Buton pentru redeschiderea slide-ului intro - stilizat ca celelalte butoane */}
       {!showIntro && (
         <button 
           className={`fixed bottom-5 right-5 ${buttonStyle} z-40`}
@@ -402,22 +367,21 @@ const Prez = () => {
         </button>
       )}
       
-      {/* Conținutul principal al prezentării - împărțit în două coloane */}
       <div className="pl-24 flex flex-1 w-full relative" style={{ zIndex: 2 }}>
-        {/* Prima coloană - imaginile prezentării - acum cu click pentru a naviga */}
+
         <div className="flex-shrink-0 w-[calc(50%-25px)] flex items-center justify-center relative p-12">
           <div 
             className="w-[617px] h-[300px] flex items-center justify-center cursor-pointer" 
             onClick={() => currentIndex < images.length - 1 && !isAnimating && handleNext()}
           >
-            {/* Imaginea curentă vizibilă */}
+           
             <img
               src={images[currentIndex]}
               alt={`Qin ${currentIndex}`}
               className="max-w-full max-h-full object-contain absolute"
               style={{ zIndex: 10 }}
             />
-            {/* Imaginea următoare - apare cu efect de fade-in când se navighează */}
+            
             <img
               src={images[nextIndex]}
               alt={`Qin ${nextIndex}`}
@@ -440,11 +404,11 @@ const Prez = () => {
               borderRadius: '8px', 
               border: '4px solid rgb(71, 88, 76)', 
               height: '650px', 
-              width: '550px', // Micșorat cu 50px (de la 600px la 550px)
+              width: '550px', 
               position: 'relative'
             }}
           >
-            {/* Imaginea de fundal pentru textul prezentării - acum și ea clickabilă */}
+
             <div 
               className="w-full h-[300px] overflow-hidden absolute top-0 left-0 cursor-pointer"
               onClick={() => currentIndex < images.length - 1 && !isAnimating && handleNext()}
@@ -455,15 +419,14 @@ const Prez = () => {
                 className="w-full h-full object-cover opacity-90"
               />
             </div>
-            {/* Textul prezentării - poziționat sub imagine */}
             <div className="relative font-serif text-lg whitespace-pre-line mt-[300px] z-10"
                  dangerouslySetInnerHTML={{ __html: formatMarkdown(texts[currentIndex]) }}>
             </div>
-          </div>
-          
-          {/* Butoane de navigare pentru prezentare cu noul stil */}
+          </div>   
+
+
+
           <div className="flex justify-center space-x-4 mt-4">
-            {/* Butonul Înapoi - vizibil doar dacă nu suntem la primul slide */}
             {currentIndex > 0 && (
               <button 
                 onClick={handleUndo} 
@@ -473,7 +436,6 @@ const Prez = () => {
                 &#8592; Înapoi
               </button>
             )}
-            {/* Butonul de resetare - mereu vizibil */}
             <button 
               onClick={handleRevert} 
               className={`${buttonStyle} ${isAnimating ? 'opacity-50 cursor-not-allowed' : ''}`} 
@@ -481,7 +443,6 @@ const Prez = () => {
             >
               Resetare
             </button>
-            {/* Butonul Înainte - vizibil doar dacă nu suntem la ultimul slide */}
             {currentIndex < images.length - 1 && (
               <button 
                 onClick={handleNext} 
@@ -494,8 +455,7 @@ const Prez = () => {
           </div>
         </div>
       </div>
-      
-      {/* Stiluri pentru scrollbar - le păstrăm pentru div-ul de conținut dar nu pentru popup */}
+
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           width: 8px;

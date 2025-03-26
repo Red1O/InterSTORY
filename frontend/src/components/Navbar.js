@@ -11,13 +11,13 @@ const Navbar = () => {
   const menuRef = useRef(null);
   const location = useLocation();
 
-  // Close menu when route changes
+
   useEffect(() => {
     setMenuOpen(false);
     setMenuVisible(false);
   }, [location]);
 
-  // Handle clicks outside menu to close it
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target) && !event.target.closest('button[aria-label="Toggle menu"]')) {
@@ -76,11 +76,7 @@ const Navbar = () => {
       // Create email subject and body
       const subject = encodeURIComponent('InterSTORY Bug Report');
       const body = encodeURIComponent(bugDescription);
-      
-      // Open default email client
       window.location.href = `mailto:red40667@gmail.com?subject=${subject}&body=${body}`;
-      
-      // Show success message
       setTimeout(() => {
         setSubmitStatus('Bug report email prepared. Please send from your email client.');
         setTimeout(() => {

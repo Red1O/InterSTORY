@@ -3,22 +3,22 @@ import CloudBG from '../components/CloudBG';
 import sunImage from '../assets/sun.jpg';
 
 const About = () => {
-  // Use state to handle image loading errors
+  
   const [imageError, setImageError] = useState(false);
 
-  // Handle image loading error
+
   const handleImageError = () => {
     console.error("Nu s-a putut încărca imaginea de profil");
     setImageError(true);
   };
   
-  // Refs for the sections to animate
+
   const creatorRef = useRef(null);
   const acknowledgementsRef = useRef(null);
   const technologiesRef = useRef(null);
   const techItemRefs = useRef([]);
 
-  // Observer for fade-in animations
+  
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -37,12 +37,12 @@ const About = () => {
 
     const observer = new IntersectionObserver(handleIntersect, observerOptions);
 
-    // Observe main sections
-    if (creatorRef.current) observer.observe(creatorRef.current);
+ 
+      if (creatorRef.current) observer.observe(creatorRef.current);
     if (acknowledgementsRef.current) observer.observe(acknowledgementsRef.current);
     if (technologiesRef.current) observer.observe(technologiesRef.current);
 
-    // Observe technology items
+
     techItemRefs.current.forEach(ref => {
       if (ref) observer.observe(ref);
     });
@@ -57,7 +57,7 @@ const About = () => {
     };
   }, []);
 
-  // Add tech item refs
+
   const addTechItemRef = (el) => {
     if (el && !techItemRefs.current.includes(el)) {
       techItemRefs.current.push(el);
@@ -90,7 +90,7 @@ const About = () => {
             Despre InterSTORY
           </h1>
           
-          {/* Creator Section */}
+         
           <div 
             ref={creatorRef}
             className="mb-16 p-6 rounded-lg shadow-lg fade-in" 
@@ -103,7 +103,7 @@ const About = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
               <div className="md:w-1/3 flex justify-center">
                 <div className="w-48 h-48 rounded-full overflow-hidden border-4" style={{ borderColor: 'rgb(71, 88, 76)' }}>
-                  {/* Use conditional rendering for image with fallback */}
+                  
                   {imageError ? (
                     <div className="w-full h-full flex items-center justify-center bg-gray-200">
                       <span className="text-lg font-serif" style={{ color: 'rgb(71, 88, 76)' }}>R</span>
@@ -165,9 +165,10 @@ const About = () => {
               <div>
                 <h3 className="text-xl font-serif mb-2" style={{ color: 'rgb(71, 88, 76)' }}>Ajutor Tehnic și Design</h3>
                 <ul className="list-disc pl-6" style={{ color: 'rgb(71, 88, 76)' }}>
+                <li className="mb-2">Domnul Ion Laslo</li>
                   <li className="mb-2">Suciu Alex</li>
                   <li className="mb-2">Chiorean Casian</li>
-                  <li className="mb-2">Domnul Ion Laslo</li>
+                  
                 </ul>
               </div>
               
@@ -179,8 +180,7 @@ const About = () => {
               </div>
             </div>
           </div>
-          
-          {/* Technologies Section */}
+
           <div 
             ref={technologiesRef}
             className="p-6 rounded-lg shadow-lg fade-in" 
@@ -199,9 +199,9 @@ const About = () => {
                 <h3 className="text-xl font-serif mb-2" style={{ color: 'rgb(71, 88, 76)' }}>Frontend</h3>
                 <ul className="list-disc pl-6" style={{ color: 'rgb(71, 88, 76)' }}>
                   <li className="mb-1">React.js</li>
-                  <li className="mb-1">HTML5</li>
-                  <li className="mb-1">CSS3</li>
-                  <li className="mb-1">JavaScript (ES6+)</li>
+                  <li className="mb-1">HTML</li>
+                  <li className="mb-1">CSS</li>
+                  <li className="mb-1">JavaScript</li>
                   <li className="mb-1">Tailwind CSS</li>
                 </ul>
               </div>
@@ -213,7 +213,7 @@ const About = () => {
               >
                 <h3 className="text-xl font-serif mb-2" style={{ color: 'rgb(71, 88, 76)' }}>Backend</h3>
                 <ul className="list-disc pl-6" style={{ color: 'rgb(71, 88, 76)' }}>
-                  <li className="mb-1">Node.js</li>
+                  <li className="mb-1">Node.js (kinda...)</li>
                 </ul>
               </div>
               
@@ -222,7 +222,7 @@ const About = () => {
                 className="p-4 bg-opacity-70 rounded-lg fade-in tech-item" 
                 style={{ backgroundColor: 'rgba(233, 226, 207, 0.7)', '--index': 2 }}
               >
-                <h3 className="text-xl font-serif mb-2" style={{ color: 'rgb(71, 88, 76)' }}>Instrumente de Dezvoltare</h3>
+                <h3 className="text-xl font-serif mb-2" style={{ color: 'rgb(71, 88, 76)' }}>Development Tools</h3>
                 <ul className="list-disc pl-6" style={{ color: 'rgb(71, 88, 76)' }}>
                   <li className="mb-1">Git & GitHub</li>
                   <li className="mb-1">VS Code</li>
@@ -239,6 +239,7 @@ const About = () => {
                 <ul className="list-disc pl-6" style={{ color: 'rgb(71, 88, 76)' }}>
                   <li className="mb-1">Figma</li>
                   <li className="mb-1">Photopea</li>
+                  <li className="mb-1">Photoshop</li>
                 </ul>
               </div>
               
@@ -258,7 +259,7 @@ const About = () => {
                 className="p-4 bg-opacity-70 rounded-lg fade-in tech-item" 
                 style={{ backgroundColor: 'rgba(233, 226, 207, 0.7)', '--index': 5 }}
               >
-                <h3 className="text-xl font-serif mb-2" style={{ color: 'rgb(71, 88, 76)' }}>Biblioteci</h3>
+                <h3 className="text-xl font-serif mb-2" style={{ color: 'rgb(71, 88, 76)' }}>Libraries</h3>
                 <ul className="list-disc pl-6" style={{ color: 'rgb(71, 88, 76)' }}>
                   <li className="mb-1">React Router</li>
                   <li className="mb-1">NextUI</li>

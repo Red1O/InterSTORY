@@ -4,7 +4,7 @@ import d1 from '../assets/d1.png';
 import CloudBG from '../components/CloudBG';
 
 const Home = () => {
-  // Definim stilul butonului pentru a fi identic cu cel din Prez.js
+  
   const buttonStyle = `
     px-5 py-3
     bg-[rgb(200,193,174)] text-[rgb(71,88,76)] 
@@ -17,10 +17,8 @@ const Home = () => {
 
   return (
     <section className="hero flex flex-col items-center justify-center relative overflow-hidden" style={{ height: 'calc(100vh - 80px)', backgroundColor: 'rgb(233, 226, 207)' }}>
-      {/* Cloud background component */}
+     
       <CloudBG />
-      
-      {/* Main content - Dragon with green filter */}
       <div className="absolute right-0 top-0 h-full flex items-center justify-center" style={{ zIndex: 10 }}>
         <img 
           src={d1} 
@@ -28,7 +26,7 @@ const Home = () => {
           className="h-3/4 object-contain" 
           style={{ 
             filter: 'brightness(0) saturate(100%) invert(31%) sepia(12%) saturate(935%) hue-rotate(86deg) brightness(95%) contrast(86%)'
-          }}
+          }}//mersi chatgpt... culoarea era initial diferita la img
         />
       </div>
       
@@ -48,6 +46,14 @@ const Home = () => {
             </button>
           </Link> 
         </div>
+      </div>
+      <div 
+        className="absolute left-6 bottom-6 text-[rgb(71,88,76)] opacity-90 font-serif"
+        style={{ zIndex: 20 }}
+      >
+        <p className="text-base font-medium">Coordonator: </p>
+        <p className="text-base font-medium">Madaras Monica</p>
+        <p className="text-base font-medium"> Laslo Ion</p>
       </div>
     </section>
   );

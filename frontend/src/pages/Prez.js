@@ -325,10 +325,10 @@ const Prez = () => {
           />
         </div>
 
-        <div 
-          ref={introContentRef}
-          className="bg-[rgb(200,193,174)] p-8 pb-16 overflow-hidden h-[calc(100%-24rem)] relative"
-        >
+          <div 
+            ref={introContentRef}
+            className="bg-[rgb(200,193,174)] p-8 pb-16 overflow-y-auto scrollbar-hide h-[calc(100%-24rem)] relative"
+          >
 
           <div className="absolute top-4 right-4 flex items-center justify-center">
             <button 
@@ -391,9 +391,8 @@ const Prez = () => {
           </div>
         </div>
         
-        {/* A doua coloană - textele prezentării */}
+
         <div className="flex-shrink-0 w-[calc(50%+25px)] flex flex-col items-center justify-center">
-          {/* Container pentru textul prezentării cu efect de fade */}
           <div 
             ref={textContentRef}
             className={`relative py-8 px-8 transition-opacity duration-1000 overflow-y-auto overflow-x-hidden scrollbar-hide ${fade ? 'opacity-0' : 'opacity-100'}`} 
@@ -474,7 +473,13 @@ const Prez = () => {
         .scrollbar-hide::-webkit-scrollbar-thumb:hover {
           background-color: rgba(71, 88, 76, 0.7);
         }
-      `}</style>
+        
+        /* Adaugă stiluri specifice pentru Firefox */
+        .scrollbar-hide {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(71, 88, 76, 0.5) rgba(71, 88, 76, 0.1);
+        }
+  `}</style>
     </div>
   );
 };

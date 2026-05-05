@@ -26,7 +26,7 @@ const Home = () => {
           className="h-3/4 object-contain" 
           style={{ 
             filter: 'brightness(0) saturate(100%) invert(31%) sepia(12%) saturate(935%) hue-rotate(86deg) brightness(95%) contrast(86%)'
-          }}//mersi chatgpt... culoarea era initial diferita la img
+          }}
         />
       </div>
       
@@ -47,14 +47,7 @@ const Home = () => {
           </Link> 
         </div>
       </div>
-      <div 
-        className="absolute left-6 bottom-6 text-[rgb(71,88,76)] opacity-90 font-serif"
-        style={{ zIndex: 20 }}
-      >
-        <p className="text-base font-medium">Coordonator: </p>
-        <p className="text-base font-medium">Madaras Monica</p>
-        <p className="text-base font-medium"> Laslo Ion</p>
-      </div>
+   
     </section>
   );
 }

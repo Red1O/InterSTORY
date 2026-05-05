@@ -11,6 +11,9 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [answers, setAnswers] = useState([]);
+  const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
+  const [saveError, setSaveError] = useState(null);
 
   const [currentFact, setCurrentFact] = useState(0);
   const [factPaused, setFactPaused] = useState(false);
@@ -156,6 +159,16 @@ const Quiz = () => {
 
   const handleAnswerOptionClick = (isCorrect, index) => {
     setSelectedAnswer(index);
+
+    setAnswers((prev) => {
+      const next = [...prev];
+      next[currentQuestion] = {
+        questionIndex: currentQuestion,
+        answerIndex: index,
+        isCorrect
+      };
+      return next;
+    });
     
     if (isCorrect) {
       setScore(score + 1);
@@ -189,7 +202,52 @@ const Quiz = () => {
     setScore(0);
     setSelectedAnswer(null);
     setShowExplanation(false);
+    setAnswers([]);
+    setSaveStatus('idle');
+    setSaveError(null);
   };
+
+
+  useEffect(() => {
+    let didCancel = false;
+
+    async function saveResult() {
+      if (!showScore) return;
+      if (saveStatus !== 'idle') return;
+
+      setSaveStatus('saving');
+      setSaveError(null);
+
+      try {
+        const res = await fetch('/api/quiz-results', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            score,
+            totalQuestions: questions.length,
+            answers: answers.filter(Boolean)
+          })
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || `HTTP ${res.status}`);
+        }
+
+        if (!didCancel) setSaveStatus('saved');
+      } catch (e) {
+        if (!didCancel) {
+          setSaveStatus('error');
+          setSaveError(e?.message ?? 'Unknown error');
+        }
+      }
+    }
+
+    saveResult();
+    return () => {
+      didCancel = true;
+    };
+  }, [showScore, saveStatus, score, answers, questions.length]);
 
 
   useEffect(() => {
@@ -252,6 +310,20 @@ const Quiz = () => {
             <h2 className="text-3xl font-bold mb-4 text-[rgb(71,88,76)]">
               Scorul tău este {score} din {questions.length}
             </h2>
+            <p className="mb-2 text-sm text-[rgb(71,88,76)]">
+              {saveStatus === 'saving'
+                ? 'Se salvează rezultatul…'
+                : saveStatus === 'saved'
+                ? 'Rezultatul a fost salvat.'
+                : saveStatus === 'error'
+                ? 'Nu am putut salva rezultatul.'
+                : ''}
+            </p>
+            {saveStatus === 'error' && saveError ? (
+              <p className="mb-4 text-xs text-[rgb(71,88,76)] break-words">
+                {saveError}
+              </p>
+            ) : null}
             <p className="mb-6 text-lg text-[rgb(71,88,76)]">
               {score > 7 
                 ? 'Excelent! Ești un adevărat expert în istoria crearii dinastiei Qin!' 

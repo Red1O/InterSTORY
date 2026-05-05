@@ -1,1 +1,13 @@
-{}
+{
+	"name": "InterSTORY",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev:backend": "npm --prefix backend start",
+		"dev:frontend": "npm --prefix frontend start",
+		"dev": "npx concurrently -k -n backend,frontend -c green,cyan \"npm run dev:backend\" \"npm run dev:frontend\""
+	},
+	"devDependencies": {
+		"concurrently": "^9.0.1"
+	}
+}

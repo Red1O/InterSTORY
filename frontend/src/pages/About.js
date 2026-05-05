@@ -213,7 +213,9 @@ const About = () => {
               >
                 <h3 className="text-xl font-serif mb-2" style={{ color: 'rgb(71, 88, 76)' }}>Backend</h3>
                 <ul className="list-disc pl-6" style={{ color: 'rgb(71, 88, 76)' }}>
-                  <li className="mb-1">Node.js (kinda...)</li>
+                  <li className="mb-1">Node.js</li>
+                  <li className="mb-1">Express.js (REST API)</li>
+                  <li className="mb-1">SQLite</li>
                 </ul>
               </div>
               
@@ -264,6 +266,9 @@ const About = () => {
                   <li className="mb-1">React Router</li>
                   <li className="mb-1">NextUI</li>
                   <li className="mb-1">FramerMotion</li>
+                  <li className="mb-1">better-sqlite3</li>
+                  <li className="mb-1">Zod</li>
+                  <li className="mb-1">cors</li>
                 </ul>
               </div>
             </div>

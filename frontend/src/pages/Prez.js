@@ -29,7 +29,7 @@ const texts = [
   **Armament Superior:** Soldații Qin erau echipați cu arme standardizate produse în fabrici de stat. Lăncile lor aveau o lungime precisă de 5.4 metri, mai lungi decât cele ale oponenților, oferindu-le avantaj în confruntările directe. Săbiile din oțel carbon erau tratate termic printr-o tehnică secretă, rămânând ascuțite chiar și după ce tăiau prin armurile de bronz ale inamicilor.`,
 
   `**Qin cucerește Zhao:**
-  Cucerirea Zhao (228 î.Hr.) a fost relativ pașnică, deoarece Zhao era deja slăbit de conflicte interne. Odată leagănul dinastiei Zhao de Vest, acest stat fusese cândva centrul culturii chineze, dar decăzuse dramatic în ultimele secole.
+  Cucerirea Zhao (228 î.Hr.) a fost relativ pașnică, deoarece Zhao era deja slăbit de conflicte interne. Odată intemeietorul dinastiei Zhao de Vest, acest stat fusese cândva centrul culturii chineze, dar decăzuse dramatic în ultimele secole.
   
   Armata Qin, sub comanda generalului Wang Ben (fiul lui Wang Jian), a preluat rapid controlul teritoriului Zhao cu o forță de 120.000 de soldați, față de doar 80.000 cât număra armata Zhao, dintre care mulți erau milițieni slab echipați. Regele Zhao, văzând inutilitatea rezistenței, s-a predat fără o bătălie majoră, permițând Qin să-și consolideze puterea în regiune cu pierderi minime.
   
@@ -141,7 +141,7 @@ const texts = [
   - Li Xin: Generalul tânăr și arogant care a suferit cea mai mare înfrângere a Qin la Chu, fiind înlocuit de Wang Jian. A fost ulterior reabilitat și a devenit unul dintre generalii de frunte ai unificării.
   - Meng Ao: Generalul care a criticat decizia lui Wang Jian de a inunda Daliang, dar a fost ignorat. A fost executat ulterior pentru trădare, dar a fost reabilitat postum de Qin Shi Huang. `];
 
-// Text pentru slide-ul introductiv despre viața timpurie a lui Qin Shi Huang
+//Text pentru slideul introductiv despre viața timpurie lu Shi Huang
 const introText = `
 # Viața Timpurie a lui Qin Shi Huang
 
@@ -282,7 +282,6 @@ const Prez = () => {
 
   const toggleIntro = () => {
     setShowIntro(!showIntro);
-    
     if (!showIntro) {
       setTimeout(() => {
         if (introContentRef.current) {

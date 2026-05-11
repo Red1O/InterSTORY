@@ -15,6 +15,11 @@ const Quiz = () => {
   const [saveStatus, setSaveStatus] = useState('idle'); // idle | saving | saved | error
   const [saveError, setSaveError] = useState(null);
 
+  const [recentStatus, setRecentStatus] = useState('idle'); // idle | loading | loaded | error
+  const [recentError, setRecentError] = useState(null);
+  const [recentResults, setRecentResults] = useState([]);
+  const [dbStats, setDbStats] = useState(null);
+
   const [currentFact, setCurrentFact] = useState(0);
   const [factPaused, setFactPaused] = useState(false);
   const jsConfettiRef = useRef(null);
@@ -205,7 +210,57 @@ const Quiz = () => {
     setAnswers([]);
     setSaveStatus('idle');
     setSaveError(null);
+
+    setRecentStatus('idle');
+    setRecentError(null);
+    setRecentResults([]);
+    setDbStats(null);
   };
+
+
+  useEffect(() => {
+    let didCancel = false;
+
+    async function loadDbData() {
+      if (!showScore) return;
+
+      setRecentStatus('loading');
+      setRecentError(null);
+
+      try {
+        const [recentRes, statsRes] = await Promise.all([
+          fetch('/api/quiz-results?limit=10'),
+          fetch('/api/quiz-results/stats')
+        ]);
+
+        if (!recentRes.ok) {
+          const text = await recentRes.text();
+          throw new Error(text || `HTTP ${recentRes.status}`);
+        }
+        if (!statsRes.ok) {
+          const text = await statsRes.text();
+          throw new Error(text || `HTTP ${statsRes.status}`);
+        }
+
+        const recentJson = await recentRes.json();
+        const statsJson = await statsRes.json();
+
+        if (didCancel) return;
+        setRecentResults(Array.isArray(recentJson?.results) ? recentJson.results : []);
+        setDbStats(statsJson?.stats ?? null);
+        setRecentStatus('loaded');
+      } catch (e) {
+        if (didCancel) return;
+        setRecentStatus('error');
+        setRecentError(e?.message ?? 'Unknown error');
+      }
+    }
+
+    loadDbData();
+    return () => {
+      didCancel = true;
+    };
+  }, [showScore, saveStatus]);
 
 
   useEffect(() => {
@@ -337,6 +392,62 @@ const Quiz = () => {
             >
               Încearcă din nou
             </button>
+
+            <div className="mt-8 text-left bg-[rgb(233,226,207)] border-2 border-[rgb(71,88,76)] rounded-lg p-4">
+              <h3 className="text-xl font-bold text-[rgb(71,88,76)] mb-2">
+                Istoric rezultate 
+              </h3>
+
+              {dbStats ? (
+                <div className="text-sm text-[rgb(71,88,76)] mb-3">
+                  <span className="font-medium">Total încercări salvate:</span> {dbStats.totalAttempts}
+                  {dbStats.bestScore != null ? (
+                    <span className="ml-4"><span className="font-medium">Cel mai bun scor:</span> {dbStats.bestScore}/{questions.length}</span>
+                  ) : null}
+                  {dbStats.avgScore != null ? (
+                    <span className="ml-4"><span className="font-medium">Media:</span> {dbStats.avgScore.toFixed(2)}</span>
+                  ) : null}
+                </div>
+              ) : null}
+
+              {recentStatus === 'loading' ? (
+                <p className="text-sm text-[rgb(71,88,76)]">Se încarcă rezultatele…</p>
+              ) : recentStatus === 'error' ? (
+                <p className="text-sm text-[rgb(71,88,76)] break-words">Nu pot încărca rezultatele: {recentError}</p>
+              ) : recentResults.length === 0 ? (
+                <p className="text-sm text-[rgb(71,88,76)]">Nu există rezultate încă.</p>
+              ) : (
+                <div className="space-y-3">
+                  {recentResults.map((r, idx) => {
+                    const total = Number(r.total_questions ?? questions.length) || questions.length;
+                    const sc = Number(r.score ?? 0) || 0;
+                    const pct = total > 0 ? Math.round((sc / total) * 100) : 0;
+                    const createdLabel = r.created_at ? new Date(r.created_at).toLocaleString('ro-RO') : '';
+
+                    return (
+                      <div
+                        key={r.id ?? idx}
+                        className={`p-3 rounded-md border-2 border-[rgb(71,88,76)] ${idx === 0 ? 'bg-[rgb(200,193,174)]' : 'bg-[rgb(233,226,207)]'}`}
+                      >
+                        <div className="flex flex-wrap items-baseline justify-between gap-2 text-[rgb(71,88,76)]">
+                          <div className="text-sm">
+                            <span className="font-medium">ID:</span> {r.id} {createdLabel ? <span className="ml-2 opacity-80">({createdLabel})</span> : null}
+                          </div>
+                          <div className="text-sm font-medium">{sc}/{total} ({pct}%)</div>
+                        </div>
+
+                        <div className="mt-2 w-full bg-[rgb(233,226,207)] border-2 border-[rgb(71,88,76)] rounded-md overflow-hidden">
+                          <div
+                            className="h-3 bg-[rgb(71,88,76)] transition-all duration-700"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <div className="bg-[rgb(200,193,174)] p-8 rounded-lg border-4 border-[rgb(71,88,76)] shadow-xl">

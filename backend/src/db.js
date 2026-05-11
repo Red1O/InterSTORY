@@ -1,7 +1,16 @@
+import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import Database from 'better-sqlite3';
 
-const dbFilePath = path.join(process.cwd(), 'data', 'quiz.db');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const defaultDbFilePath = path.resolve(__dirname, '..', 'data', 'quiz.db');
+const dbFilePath = process.env.DB_PATH
+  ? path.resolve(process.env.DB_PATH)
+  : defaultDbFilePath;
+
+fs.mkdirSync(path.dirname(dbFilePath), { recursive: true });
 
 export const db = new Database(dbFilePath);
 
@@ -18,8 +27,6 @@ export function initDb() {
     );
   `);
 }
-
-// Ensure schema exists before preparing statements.
 initDb();
 
 export const insertQuizResult = db.prepare(
@@ -32,4 +39,13 @@ export const listRecentResults = db.prepare(
    FROM quiz_results
    ORDER BY id DESC
    LIMIT @limit`
+);
+
+export const getQuizResultStats = db.prepare(
+  `SELECT
+     COUNT(*) AS total_attempts,
+     MAX(score) AS best_score,
+     AVG(score) AS avg_score,
+     AVG(CAST(score AS REAL) / total_questions) AS avg_accuracy
+   FROM quiz_results`
 );

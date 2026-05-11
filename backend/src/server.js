@@ -1,8 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import { z } from 'zod';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import { insertQuizResult, listRecentResults } from './db.js';
+import { getQuizResultStats, insertQuizResult, listRecentResults } from './db.js';
 
 const app = express();
 
@@ -54,6 +57,33 @@ app.get('/api/quiz-results', (req, res) => {
   const rows = listRecentResults.all({ limit });
   res.json({ results: rows });
 });
+
+app.get('/api/quiz-results/stats', (_req, res) => {
+  const row = getQuizResultStats.get();
+
+  const stats = {
+    totalAttempts: Number(row?.total_attempts ?? 0),
+    bestScore: row?.best_score == null ? null : Number(row.best_score),
+    avgScore: row?.avg_score == null ? null : Number(row.avg_score),
+    avgAccuracy: row?.avg_accuracy == null ? null : Number(row.avg_accuracy)
+  };
+
+  res.json({ stats });
+});
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const frontendBuildPath = path.resolve(__dirname, '..', '..', 'frontend', 'build');
+const frontendIndexHtml = path.join(frontendBuildPath, 'index.html');
+
+if (fs.existsSync(frontendIndexHtml)) {
+  app.use(express.static(frontendBuildPath));
+
+  // SPA fallback (leave /api routes untouched).
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api/')) return next();
+    return res.sendFile(frontendIndexHtml);
+  });
+}
 
 const port = Number(process.env.PORT ?? 5000);
 app.listen(port, () => {
